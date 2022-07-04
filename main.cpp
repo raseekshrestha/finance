@@ -51,7 +51,6 @@ float checkBalance(string number);
 
 
 // global variables
-// char currentUser[20],currentUserMobile[15];
 string currentUser,currentUserMobile;
 int firstLogin,currentUserPin;
 
@@ -60,8 +59,6 @@ class BaseUser{
         string name,number;
         int age;
         char role;
-    // public:
-    //     friend class Member;
     
 };
 
@@ -88,18 +85,8 @@ class Member:public BaseUser{
 
 int main(){
 	srand(time(0));
-    // Member m1("raseek shrestha","9861437533",12);
-    // m1.show();
-    // login();
-    // cout << color("red");
-    colorize("col this\n","yellow");
     clear();
     login();
-    // // cout << doesPathExist("details/customerdetails.txt");
-	// // isFolder("name");
-	// // registerUser();
-	// cout << generateRandomPassword();
-	// setUnseenNotification("2",0);
 }
 
 bool doesPathExist(string s){
@@ -109,7 +96,6 @@ bool doesPathExist(string s){
 
 void isFolder(string dirname){
 	if (!doesPathExist(dirname)){
-		// return;
 		string cmd;
 		cmd = "mkdir " + dirname;
 		system(cmd.c_str());
@@ -138,12 +124,9 @@ void login(){
 
 }
 
-
 void colorize(string msg,string colorname){
     cout << color(colorname) << msg << color("reset");
-
 }
-
 
 string color(string colorName){
 	if (colorName == "red"){
@@ -199,7 +182,6 @@ int askForNumber(int min,int max){
 		}
 	}
 }
-
 
 int authenticate(string username,string password,string role){
     string filename,user,pass,fname;
@@ -270,7 +252,6 @@ void adminDashboard(){
 		}
 	}
 	else if (choice ==3){
-		// char number[20],msg[200];
         string number;
 		char msg[200];
 		float amount;
@@ -278,7 +259,6 @@ void adminDashboard(){
 		cin >> number;
 		cout << "Amount: ";
 		cin >> amount;
-        // cout << "now deposite money function will run";
 		if (depositMoney(number,amount)==1){
 			sprintf(msg,"Rs. %.2f has been deposited to your account",amount);
 			cout << endl << colorizeReturn(msg,"green") << endl;
@@ -289,11 +269,9 @@ void adminDashboard(){
 		}
 	}
 	else if (choice==4){
-		// char msg[300];
         char msg[200];
 		cout << "Message or(q to cancel): ";
 		fflush(stdin);
-		// gets(msg);
         cin.getline(msg,200);
 		if (strlen(msg) == 1 && msg[0]=='q'){
 			clear();
@@ -310,18 +288,11 @@ void adminDashboard(){
 	adminDashboard();
 }
 
-
-
 string colorizeReturn(string msg,string colorName){
-	// static char tempString[200];
-    // string tempString;
     char tempString[200];
 	sprintf(tempString,"%s%s%s",color(colorName).c_str(),msg.c_str(),color("reset").c_str());
-	// return tempString;
-    // cout << "tempString"
     return tempString;
 }
-
 
 void listUsers(){
 	
@@ -334,7 +305,8 @@ void listUsers(){
 	string firstname,lastname,number,gender,DOB,ac;
 	string fullname,formattedStr;
 	int age;
-    string extraSpace,finalLine;
+    string extraSpace;
+	char finalLine[200];
 	int counter = countLinesInFile(filename);
 	cout << colorizeReturn("Acc no.\t\tName\t\t\tNumber\t\tGender\tAge\tDOB\n","blueUnderline");
     for (int i=1;i<=counter;i++){
@@ -342,14 +314,13 @@ void listUsers(){
 		fullname = firstname + " " + lastname;
         string str = number;
         str.length() < 8 ? extraSpace = "\t" : extraSpace = "";
-
-		finalLine =  ac + "\t" + fullname + "\t\t" + number + "\t" + extraSpace  + gender + "\t" + to_string(age) + "\t" + DOB;
+		sprintf(finalLine,"%s\t%s\t\t%s\t%s%s\t%d\t%s",ac.c_str(),fullname.c_str(),number.c_str(),extraSpace.c_str(),gender.c_str(),age,DOB.c_str());
+		// finalLine =  ac + "\t" + fullname + "\t\t" + number + "\t" + extraSpace  + gender + "\t" + to_string(age) + "\t" + DOB;
 		cout << finalLine<<endl;
 		
     }
     fp.close();
 }
-
 
 void registerUser(){
     // creates details folder if not exists
@@ -368,20 +339,15 @@ void registerUser(){
 			break;
 		}
 	}
-    // printf("gender : ");
-    // scanf("%s",customer.gender);
 	gender = takeStringInput("Gender : ");
 	age = takeStringInput("Age : ");
 	dob = takeStringInput("date of birth : ");
 
     long int ac = accountNumber(); 
-	// cout << "account number is "<< to_string(ac);
     sprintf(line,"%ld %s %s %s %s %s %s\n",ac,firstname.c_str(),lastname.c_str(),number.c_str(),gender.c_str(),age.c_str(),dob.c_str());
 	fp << line;
 	fp.close();
  	// // adding 0 balance to user in balance file
- 	// FILE *balance;
-	// char balanceLine[200];
  	isFolder("balance");
  	ofstream balance("balance/allbalances.txt",ios::app);
  	sprintf(line, "%ld %s %f\n",ac,number.c_str(),0.0);
@@ -390,14 +356,12 @@ void registerUser(){
 
  	// // generating temporary password and saving login/users.txt
 	// // format -> number password firstname
-	// char loginLine[100];
 	string tempPass;
 	tempPass = generateRandomPassword();
 	ofstream userFile("login/users.txt",ios::app);
 	sprintf(line, "%s %s %s 1 9999\n",number.c_str(),tempPass.c_str(),firstname.c_str());
 	userFile << line;
 	userFile.close();
-	// fclose(userFile);
  	colorize("User is registered Successfully\n","green");
  	cout << "Account No.\t: "<< ac << endl;
  	cout << "Username \t: " << number << endl;
@@ -406,7 +370,6 @@ void registerUser(){
 	char tosnd[50] = "Account Registration Complete";
 	sendNotification(tosnd,number,1); // 1 new notification for new account so isNew=1
  }
-
 
 string takeStringInput(string msg){
 	string s;
@@ -417,7 +380,6 @@ string takeStringInput(string msg){
 
 int mobileNumberExists(string mobileNumber){
 	char filename[30] = "details/customerdetails.txt";
-	// int lines = countLinesInFile(filename);
 	char ac[10],fname[20],lname[20],num[15],gender[10],dob[15];
 	int age;
 	ifstream fp(filename);
@@ -437,7 +399,6 @@ long int accountNumber(){
 
 string generateRandomPassword(){
 	static char pass[5];
-	// string pass;
 	int charType; //0->lowercase 1-->uppercase 2->number
 	for (int i=0;i<5;i++){
 		charType = rand()%3;
@@ -458,7 +419,6 @@ string generateRandomPassword(){
 int generateCharacter(int min,int max){	
 	return (rand() % (max-min+1))+min;	
 }
-
 
 int sendNotification(string msg,string number,int isNew){
 	char filename[40],finalNofiticationMsg[200];
@@ -483,14 +443,9 @@ void setUnseenNotification(string number,int isNew){ // if new is 1 set notifica
 		exit(0);
 	}
 	char filename[50] = "notifications/unseen_notifications.txt";
-	if (isNew == 1){
-		// FILE *fp = fopen("notifications/unseen_notifications.txt","a");
-		// cout << "one is selected;";
-		
+	if (isNew == 1){		
 		ofstream fp(filename,ios::app);
-		// fprintf(fp,"%s %d\n",number,1); // 1 = new account so unseen notification is set to 1
-		fp << number << " 1"<<endl;
-		// fclose(fp);
+		fp << number << " 1"<<endl; // 1 = new account so unseen notification is set to 1
 		fp.close();
 	}
 	else{//increase number of unseen notification by 1 if isNew == 0 (not new account)
@@ -499,13 +454,11 @@ void setUnseenNotification(string number,int isNew){ // if new is 1 set notifica
 		ifstream org(filename);
 		ofstream temp(tempFile);
 
-		// char mobile[20];
 		int unseenNum;
 		string mob;
 
 		for (int i=1;i<=lines;i++){
 			org >> mob >> unseenNum;
-			// cout << mob.length()<<endl;
 			if (mob == number){
 				if (isNew == 0){
 					sprintf(chunk,"%s %d\n",mob.c_str(),unseenNum+1);
@@ -529,13 +482,11 @@ void setUnseenNotification(string number,int isNew){ // if new is 1 set notifica
 	}	
 }
 
-
 int removeAndRename(string tempFile,string originalFile){
 	remove(originalFile.c_str());
 	rename(tempFile.c_str(),originalFile.c_str());
 	return 1;
 }
-
 
 int countLinesInFile(string filename){
 	int lines = 0;
@@ -550,7 +501,6 @@ int countLinesInFile(string filename){
 	fopen.close();
 	return lines-1;
 }
-
 
 void toHtml(){
 	int noOfCols=7;
@@ -588,7 +538,6 @@ void toHtml(){
 	colorize("Successfully exported to index.html\n","green");
 }
 
-
 int depositMoney(string mobileNumber,float amount){
 	if (mobileNumberExists(mobileNumber)){
 		addBalance(mobileNumber,amount);
@@ -619,9 +568,7 @@ void addBalance(string mobileNumber,float amount){
 		}
 		tempfile << chunk;
 	}
-	// fclose(fp);
 	fp.close();
-	// fclose(tempFile);
 	tempfile.close();
 	remove(filename);
 	rename("balance/temp.txt",filename);
@@ -917,10 +864,8 @@ void firstTimeLogin(){
 	exit(0);
 }
 
-
 string askPassword(){
-	static char password[50];
-	// string pass;
+	char password[50];
 	#ifdef __WIN32
 	int i=0;
 	do{
